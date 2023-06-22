@@ -1,14 +1,16 @@
 ---
+import _ from "lodash";
+import { marked } from "marked";
 import Layout from "../layouts/Layout.astro";
 
 const response = await fetch("https://api.linear.app/graphql", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${import.meta.env.KEY}`,
-  },
-  body: JSON.stringify({
-    query: `
+	method: "POST",
+	headers: {
+		"Content-Type": "application/json",
+		Authorization: `Bearer ${import.meta.env.KEY}`,
+	},
+	body: JSON.stringify({
+		query: `
 			query getIssues {
 				issues(
 					first: 100
@@ -20,23 +22,41 @@ const response = await fetch("https://api.linear.app/graphql", {
 					nodes {
 						id
 						title
+						description
+						priorityLabel
+						state {
+							name
+						}
 					}
 				}
 			}
 		`,
-  }),
+	}),
 });
 
 const { data } = await response.json();
-
-// console.log(data);
+const byStatus = _.groupBy(data.issues.nodes, "state.name");
+const statuses = ["Todo", "In Progress", "In Review"];
 ---
 
 <Layout title="Landscape Dev Status">
-  <main>
-    <h1>Landscape Dev Status</h1>
-    {data.issues.nodes.map((i: any) => (
-			<p>{i.title}</p>
-		))}
-  </main>
+	<main>
+		<h1>Landscape Dev Status</h1>
+		{
+			_.map(statuses, (status: string) => (
+				<section>
+					<h2>{status}</h2>
+
+					{_.map(byStatus[status], (issue: any) => (
+						<details>
+							<summary>
+								{issue.title} ({issue.priorityLabel})
+							</summary>
+							<div set:html={marked.parse(issue.description)} />
+						</details>
+					))}
+				</section>
+			))
+		}
+	</main>
 </Layout>

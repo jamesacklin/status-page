@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^3.5.0",
-    "astro": "^2.7.0"
+    "astro": "^2.7.0",
+    "lodash": "^4.17.21",
+    "marked": "^5.1.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.1"
   }
 }
