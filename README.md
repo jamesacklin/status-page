@@ -1,4 +1,4 @@
-# status-page
+# landscape-status
 
 Communicates the working status of the Landscape team to the rest of the world.
 
