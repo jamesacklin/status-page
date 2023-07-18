@@ -23,7 +23,6 @@ const { title } = Astro.props;
   </body>
 </html>
 <style is:global>
-
 	@font-face {
 	  font-family: 'Diatype Mono Variable';
 	  src: url('/fonts/ABCDiatypeMonoVariable.woff2') format('woff2');
@@ -33,11 +32,11 @@ const { title } = Astro.props;
 	  font-named-instance: 'Regular';
 	}
   
-	  :root { font-family: 'Diatype Mono Variable', monospace; }
-	  @supports (font-variation-settings: normal) {
-		:root { font-family: 'Diatype Mono Variable', monospace; }
-	  }
+	:root { font-family: 'Diatype Mono Variable', monospace; }
 
+	@supports (font-variation-settings: normal) {
+		:root { font-family: 'Diatype Mono Variable', monospace; }
+	}
 
   * {
     margin: 0;
