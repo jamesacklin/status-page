@@ -71,7 +71,7 @@ async function remarkContent(content: string) {
 					{_.map(_.sortBy(byStatus[status], "priority"), (issue: any) => (
 						<details>
 							<summary>
-								{issue.title} <small>({issue.priorityLabel})</small>
+								{issue.title} <span>({issue.priorityLabel})</span>
 							</summary>
 							<div set:html={remarkContent(issue.description)} />
 						</details>
