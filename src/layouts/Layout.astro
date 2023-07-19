@@ -4,24 +4,60 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <main>
-      <slot />
-    </main>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" type="image/png" href="favicon.svg"/>
+		<link rel="apple-touch-icon" href="favicon.svg">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="generator" content={Astro.generator} />
+				
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" 					content="Tlon Corporation">
+		<meta name="description" 			content="Tlon exists to build exceptionally well-crafted software for people’s everyday lives.">
+  <meta name="cf-2fa-verify" content="hj147kyae651DBG6j8fsg">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" 			content="website">
+		<meta property="og:url" 			content="https://tlon.io/">
+		<meta property="og:title" 			content="Tlon Corporation">
+		<meta property="og:description" 	content="Tlon exists to build exceptionally well-crafted software for people’s everyday lives.">
+		<meta property="og:image" 			content="https://d2w9rnfcy7mm78.cloudfront.net/20991844/original_05337a7edcadf2b018a2c4d14d4a3139.png">
+
+		<!-- Twitter cards -->
+		<meta name="twitter:site"    		content="@tloncorporation">
+		<meta name="twitter:title"   		content="Tlon Corporation">
+		<meta name="twitter:description" 	content="Tlon exists to build exceptionally well-crafted software for people’s everyday lives.">   
+		<meta name="twitter:card"  			content="summary_large_image">
+		<meta name="twitter:image" 			content="https://d2w9rnfcy7mm78.cloudfront.net/20991844/original_05337a7edcadf2b018a2c4d14d4a3139.png">
+	</head>
+
+  <body class="
+		grid
+		grid-cols-12
+		gap-4
+		
+		text-md
+		lg:text-xl
+		antialiased
+
+		dark:bg-neutral-900
+		dark:text-white
+	">
+    <Nav/>
+    <slot />
+    <Footer/>
   </body>
 </html>
+
 <style is:global>
 	@font-face {
 	  font-family: 'Diatype Mono Variable';
@@ -32,79 +68,10 @@ const { title } = Astro.props;
 	  font-named-instance: 'Regular';
 	}
   
-	:root { font-family: 'Diatype Mono Variable', monospace; }
-
-	@supports (font-variation-settings: normal) {
+	  :root { font-family: 'Diatype Mono Variable', monospace; }
+	  @supports (font-variation-settings: normal) {
 		:root { font-family: 'Diatype Mono Variable', monospace; }
-	}
-
-  * {
-    margin: 0;
-    padding: 0;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-  }
-
-  body {
-    --bg: white;
-    --fg: black;
-    --mg: rgb(245, 245, 245);
-    background: var(--bg);
-    color: var(--fg);
-    font-size: 16px;
-    line-height: 1.6;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
-      --bg: black;
-      --fg: white;
-      --mg: rgb(26, 26, 26);
-    }
-  }
-
-  img {
-    max-width: 100%;
-    display: block;
-  }
-
-  a {
-    color: var(--fg);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: inherit;
-    margin: 1rem 0;
-  }
-
-  ul,
-  ol {
-    padding-left: 2ch;
-  }
-
-  main {
-    max-width: 80ch;
-    margin: 4rem auto;
-    padding: 0 1rem;
-  }
-
-  main > section {
-    margin-top: 2rem;
-  }
+	  }
 
   details {
     margin-bottom: 0.5rem;
@@ -121,7 +88,7 @@ const { title } = Astro.props;
   details > div {
     margin: 0.5rem 0;
     padding: 1.5rem 2rem 0.5rem;
-    background: var(--mg);
+    background: #ededed;
     border-radius: 0.5rem;
   }
 
@@ -140,3 +107,31 @@ const { title } = Astro.props;
     margin-bottom: 1rem;
   }
 </style>
+
+<script>
+	// identify our elements
+	const firstElement = document.querySelector("main");
+	const nav = document.querySelector("#navbar");
+
+	// callback function for scroll and touchmove event listeners
+	const handleScrollAndTouchMove = () => {
+		// measure the scroll-sensitive bottom of the nav (includes margin)
+		const navHeight = nav?.getBoundingClientRect().bottom;
+		// get the top of the first element
+		const position = firstElement?.getBoundingClientRect().top;
+
+		// if the top of the first element is above the nav, add a border
+		if (position && navHeight && position < navHeight) {
+			nav.classList.add("border-b");
+		}
+
+		// if the top of the first element is below the nav, remove the border
+		if (position && navHeight && position > navHeight) {
+			nav.classList.remove("border-b");
+		}
+	};
+
+	// add scroll and touchmove event listeners
+	document.addEventListener("scroll", handleScrollAndTouchMove);
+	document.addEventListener("touchmove", handleScrollAndTouchMove);
+</script>
